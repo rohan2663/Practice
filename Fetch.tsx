@@ -5,16 +5,13 @@ interface PostType{
     body:string
 }
 
-const Posts=()=>{
-    //let data:PostType[] = [];
+const Fetch=()=>{
     const [data,setData] = useState<PostType[] | undefined>()
     useEffect(()=>{
         fetch("https://jsonplaceholder.typicode.com/posts")
         .then((response)=>{
             return response.json();
         }).then((response)=>{
-            //console.log(response);
-            //data = response;
             setData(response);
         })
     },[]);
@@ -33,4 +30,4 @@ const Posts=()=>{
     )
 }
 
-export default Posts;
+export default Fetch;
