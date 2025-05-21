@@ -1,22 +1,34 @@
 import React, { useState } from 'react';
 
-const App = () => {
-  const [todos, setTodos] = useState([]);
-  const [input, setInput] = useState('');
+// Define the type for a to-do item
+interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
+const App: React.FC = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [input, setInput] = useState<string>('');
 
   const addTodo = () => {
     if (input.trim() === '') return;
-    setTodos([...todos, { id: Date.now(), text: input, completed: false }]);
+    const newTodo: Todo = {
+      id: Date.now(),
+      text: input,
+      completed: false,
+    };
+    setTodos([...todos, newTodo]);
     setInput('');
   };
 
-  const toggleComplete = (id) => {
+  const toggleComplete = (id: number) => {
     setTodos(todos.map(todo =>
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     ));
   };
 
-  const deleteTodo = (id) => {
+  const deleteTodo = (id: number) => {
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
@@ -26,7 +38,7 @@ const App = () => {
       <input
         type="text"
         value={input}
-        onChange={e => setInput(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
         placeholder="Enter a task"
       />
       <button onClick={addTodo}>Add</button>
@@ -38,7 +50,7 @@ const App = () => {
               onClick={() => toggleComplete(todo.id)}
               style={{
                 textDecoration: todo.completed ? 'line-through' : 'none',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
             >
               {todo.text}
