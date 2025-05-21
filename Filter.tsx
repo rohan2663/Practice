@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 
-const App = () => {
-  const [products, setProducts] = useState([]);
+// Define a TypeScript interface for product type
+interface Product {
+  id: number;
+  title: string;
+  category: string;
+}
 
-  // Load products from local storage or fetch from API
+const App: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+
   useEffect(() => {
     const stored = localStorage.getItem("electronics");
     if (stored) {
@@ -11,7 +17,7 @@ const App = () => {
     } else {
       fetch("https://fakestoreapi.com/products")
         .then(res => res.json())
-        .then(data => {
+        .then((data: Product[]) => {
           const electronics = data.filter(p => p.category === "electronics");
           setProducts(electronics);
           localStorage.setItem("electronics", JSON.stringify(electronics));
@@ -19,8 +25,7 @@ const App = () => {
     }
   }, []);
 
-  // Remove product handler
-  const handleRemove = (id) => {
+  const handleRemove = (id: number) => {
     const updated = products.filter(product => product.id !== id);
     setProducts(updated);
     localStorage.setItem("electronics", JSON.stringify(updated));
