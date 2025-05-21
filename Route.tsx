@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import ProductList from './features/products/ProductList';
 import About from './About';
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <Router>
       <div>
