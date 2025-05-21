@@ -1,33 +1,35 @@
 import React, { useState, useRef } from 'react';
 
-const App = () => {
-  const [time, setTime] = useState(0);       // Time in milliseconds
-  const [running, setRunning] = useState(false);
-  const timerRef = useRef(null);
+const App: React.FC = () => {
+  const [time, setTime] = useState<number>(0);
+  const [running, setRunning] = useState<boolean>(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const start = () => {
     if (!running) {
       setRunning(true);
       timerRef.current = setInterval(() => {
-        setTime(prev => prev + 10); // increase by 10ms
+        setTime(prev => prev + 10);
       }, 10);
     }
   };
 
   const stop = () => {
-    if (running) {
+    if (running && timerRef.current) {
       clearInterval(timerRef.current);
       setRunning(false);
     }
   };
 
   const reset = () => {
-    clearInterval(timerRef.current);
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
     setRunning(false);
     setTime(0);
   };
 
-  const formatTime = (ms) => {
+  const formatTime = (ms: number): string => {
     const seconds = Math.floor(ms / 1000);
     const milliseconds = (ms % 1000) / 10;
     return `${String(seconds).padStart(2, '0')}.${String(Math.floor(milliseconds)).padStart(2, '0')}`;
